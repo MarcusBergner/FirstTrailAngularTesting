@@ -40,7 +40,7 @@ describe("CalculatorService", () => {
 
   // mit it() wird ein(Unit) Testfall kurz beschrieben, es sollte aussagekräftig ->funktionelle Beschreibung
   // mit spyOn() -> utilityFunction von Jasmine wird überprüft das der funktionsaufruf nur einmal ausgeführt wird beim Testaufruf
-  fit("should add two numbers", () => {
+  it("should add two numbers", () => {
     // zuerst wird eine aktuelle Instanz des zu testenendes Objektes deklareiert(FakeObjekt)
     // const logger = new LoggerService();
     // spyOn() - erstes argument ist das zu prüfende objekt,
