@@ -1,4 +1,6 @@
+import { TestBed } from "@angular/core/testing";
 import { CalculatorService } from "./calculator.service";
+import { LoggerService } from "./logger.service";
 
 // describe() bschreibt die zu testende Klasse oder methode, eindeutig erkennbar beschreiben!
 describe("CalculatorService", () => {
@@ -9,7 +11,24 @@ describe("CalculatorService", () => {
   beforeEach(() => {
     console.log("Calling beforeEach()");
     loggerSpy = jasmine.createSpyObj("LoggerService", ["log"]);
-    calculator = new CalculatorService(loggerSpy);
+
+    // TestBed.configureTestingModule({}) --> kreiert ein Testmodule mit möglichen Services-Abhängigkeiten,  (Jasmine-unabhängiges-Object)
+    // welches einen Value-Wert zur verfügung stellt, wann/ wo immer die Services in der Anwendung gebraucht werden!
+
+    TestBed.configureTestingModule({
+      providers: [
+        CalculatorService,
+        // dependencyInjection Key´s müssen den gleiche Name refferenzieren wie die Services-Klasse haben !
+        // constucktor-funktionen sind in der javascript-Runtime UNIQE
+
+        // --> somit wird das hier im ersten Übergaben-Argument{provide: ...} auch zu einem uniqe-key,zum identifizieren des zu Injectierendem-Objektes!
+        // das zweite Argument nach dem Komma {provide: ...., } --> definiert wie genau injektiert werden soll
+        // provide: LoggerService =  ist somit eine reale Instanz des CalculatorService!
+        { provide: LoggerService, useValue: loggerSpy }
+      ]
+    });
+    // in Angular 8 wurde es mit TestBed.get() deklariert;
+    calculator = TestBed.inject(CalculatorService);
   });
 
   // mit it() wird der Testfall kurz beschrieben, es sollte aussagekräftig ->funktionelle Beschreibung
