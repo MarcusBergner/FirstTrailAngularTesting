@@ -2,13 +2,16 @@ import { TestBed } from "@angular/core/testing";
 import { CalculatorService } from "./calculator.service";
 import { LoggerService } from "./logger.service";
 
-// describe() bschreibt die zu testende Klasse oder methode, eindeutig erkennbar beschreiben!
-//--> mit ein "x" vorangestellt disable-this.Test !
-//--> mit ein "f" vorangestellt focused_on these particular Test !
-// Es sollten immer nach folgendem Shema definiert sein:
-//  1. setup the test --> beforeEach(()=> {});
-//  2. perform the operation that want to test --> console.log("add test"); const result = calculator.add(2, 2);
-//  3. run series of assertions, that will pass or fail -->  expect(loggerSpy.log).toHaveBeenCalledTimes(1);
+//   ``` 
+//  describe() bschreibt die zu testende Klasse oder methode, eindeutig erkennbar beschreiben!
+// --> mit ein "x" vorangestellt disable-this.Test !
+// --> mit ein "f" vorangestellt focused_on these particular Test !
+//  Es sollten immer nach folgendem Shema definiert sein:
+//   1. setup the test --> beforeEach(()=> {});
+//   2. perform the operation that want to test --> console.log("add test"); const result = calculator.add(2, 2);
+//   3. run series of assertions, that will pass or fail -->  expect(loggerSpy.log).toHaveBeenCalledTimes(1);
+//   ```
+
 describe("CalculatorService", () => {
   // alle zu verwendenden variablen, müssen wie in Java auch,
   // außerhalb mit "let" inizialisiert werden!
