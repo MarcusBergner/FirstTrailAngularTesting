@@ -5,6 +5,7 @@ import { setupCourses } from "../common/setup-test-data";
 import { CoursesModule } from "../courses.module";
 import { CoursesCardListComponent } from "./courses-card-list.component";
 
+// this is a sample for testing Angular-Components
 describe("CoursesCardListComponent", () => {
   // define testUtilitys
   let component: CoursesCardListComponent;
@@ -32,12 +33,18 @@ describe("CoursesCardListComponent", () => {
   }));
   it("should create the component", () => {});
 
-  it("should display the course list", () => {});
-
-  it("should display the first course", () => {
+  // example for a purely synchronous test!
+  it("should display the course list", () => {
     component.courses = setupCourses();
+    // need to notify the component, after assinging data to it for trigger change detection!
+
+    fixture.detectChanges();
+    console.log(testDebugElement.nativeElement.outerHTML);
+
+    // nativeElement --> return the corresponds native DOM element!
     const cards = testDebugElement.queryAll(By.css(".course-card"));
     expect(cards).toBeTruthy("Could not find cards !");
     expect(cards.length).toBe(12, "Unexpected number of courses !");
   });
+  it("should display the first course", () => {});
 });
