@@ -39,12 +39,23 @@ describe("CoursesCardListComponent", () => {
     // need to notify the component, after assinging data to it for trigger change detection!
 
     fixture.detectChanges();
-    console.log(testDebugElement.nativeElement.outerHTML);
+    // console.log(testDebugElement.nativeElement.outerHTML);
 
     // nativeElement --> return the corresponds native DOM element!
     const cards = testDebugElement.queryAll(By.css(".course-card"));
     expect(cards).toBeTruthy("Could not find cards !");
     expect(cards.length).toBe(12, "Unexpected number of courses !");
   });
-  it("should display the first course", () => {});
+  it("should display the first course", () => {
+    component.courses = setupCourses();
+    fixture.detectChanges();
+    // start by grabbing first course on list
+    const course = component.courses[0];
+    const card = testDebugElement.query(By.css(".course-card:first-child")),
+      titel = card.query(By.css("mat-card-title")),
+      image = card.query(By.css("img"));
+    expect(card).toBeTruthy("Could not find course card");
+    expect(titel.nativeElement.textContent).toBe(course.titles.description);
+    expect(image.nativeElement.src).toBe(course.iconUrl);
+  });
 });
