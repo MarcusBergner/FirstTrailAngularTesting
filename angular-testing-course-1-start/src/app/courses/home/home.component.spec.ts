@@ -21,6 +21,9 @@ describe("HomeComponent", () => {
   const beginnerCourses = setupCourses().filter(
     course => course.category == "BEGINNER"
   );
+  const advancedCourses = setupCourses().filter(
+    course => course.category == "ADVANCED"
+  );
 
   beforeEach(async(() => {
     const coursesServiceSpy = jasmine.createSpyObj("CoursesService", [
@@ -48,21 +51,28 @@ describe("HomeComponent", () => {
   });
 
   // synchron testing
-  it("should display only beginner courses", () => {
+  it("should display only beginner courses !", () => {
     coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
     fixture.detectChanges();
     const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
+    expect(tabs.length).toBe(1, "Unexpected number of tabs found !");
   });
 
-  it("should display only advanced courses", () => {
-    pending();
+  it("should display only advanced courses !", () => {
+    coursesService.findAllCourses.and.returnValue(of(advancedCourses));
+    fixture.detectChanges();
+    const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
+    expect(tabs.length).toBe(1, "Unexpected number of tabs found !");
   });
 
-  it("should display both tabs", () => {
-    pending();
+  it("should display both tabs ....", () => {
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
+    const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
+    expect(tabs.length).toBe(2, "Expected to find 2 tabs ...!");
   });
 
-  it("should display advanced courses when tab clicked", () => {
+  it("should display advanced courses when tab is clicked by the user !", () => {
     pending();
   });
 });
