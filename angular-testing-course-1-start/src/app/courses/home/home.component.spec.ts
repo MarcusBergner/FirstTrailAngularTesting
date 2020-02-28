@@ -33,7 +33,7 @@ describe("HomeComponent", () => {
     TestBed.configureTestingModule({
       imports: [
         CoursesModule,
-        // Noop --> No operation
+        // Noop --> No operation means
         NoopAnimationsModule
       ],
       providers: [{ provide: CoursesService, useValue: coursesServiceSpy }]
@@ -88,7 +88,7 @@ describe("HomeComponent", () => {
         "Could not find any card  titles !"
       );
       expect(cardTitles[0].nativeElement.textContent).toContain(
-        "Angular Security Course"
+        "Angular Testing Course"
       );
       // done() --> Jasmine function, that tell jasmie the implaementation is complete
       done();
