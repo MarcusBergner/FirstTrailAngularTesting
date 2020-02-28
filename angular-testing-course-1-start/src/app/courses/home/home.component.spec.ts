@@ -4,6 +4,7 @@ import { By } from "@angular/platform-browser";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { of } from "rxjs/internal/observable/of";
 import { setupCourses } from "../common/setup-test-data";
+import { click } from "../common/test-utils";
 import { CoursesModule } from "../courses.module";
 import { CoursesService } from "../services/courses.service";
 import { HomeComponent } from "./home.component";
@@ -72,7 +73,22 @@ describe("HomeComponent", () => {
     expect(tabs.length).toBe(2, "Expected to find 2 tabs ...!");
   });
 
+  // simulated a user tab clicked in  the DOM
   it("should display advanced courses when tab is clicked by the user !", () => {
-    pending();
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+    // detectChanges() --> reflect any  channges in DOM
+    fixture.detectChanges();
+    const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
+    click(tabs[1]);
+    fixture.detectChanges();
+
+    const cardTitles = testDebugElement.queryAll(By.css(".mat-card-label"));
+    expect(cardTitles.length).toBeGreaterThan(
+      0,
+      "Could not find any card  titles !"
+    );
+    expect(cardTitles[0].nativeElement.textContent).toContain(
+      "Angular Security Course"
+    );
   });
 });
