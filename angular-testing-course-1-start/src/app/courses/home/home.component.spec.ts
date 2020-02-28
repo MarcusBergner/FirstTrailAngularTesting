@@ -74,21 +74,24 @@ describe("HomeComponent", () => {
   });
 
   // simulated a user tab clicked in  the DOM
-  it("should display advanced courses when tab is clicked by the user !", () => {
+  it("should display advanced courses when tab is clicked by the user !", (done: DoneFn) => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     // detectChanges() --> reflect any  channges in DOM
     fixture.detectChanges();
     const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
     click(tabs[1]);
     fixture.detectChanges();
-
-    const cardTitles = testDebugElement.queryAll(By.css(".mat-card-label"));
-    expect(cardTitles.length).toBeGreaterThan(
-      0,
-      "Could not find any card  titles !"
-    );
-    expect(cardTitles[0].nativeElement.textContent).toContain(
-      "Angular Security Course"
-    );
+    setTimeout(() => {
+      const cardTitles = testDebugElement.queryAll(By.css(".mat-card-title"));
+      expect(cardTitles.length).toBeGreaterThan(
+        0,
+        "Could not find any card  titles !"
+      );
+      expect(cardTitles[0].nativeElement.textContent).toContain(
+        "Angular Security Course"
+      );
+      // done() --> Jasmine function, that tell jasmie the implaementation is complete
+      done();
+    }, 500);
   });
 });
