@@ -1,4 +1,4 @@
-import { fakeAsync, flush } from "@angular/core/testing";
+import { fakeAsync, flush, flushMicrotasks } from "@angular/core/testing";
 
 // Browser-Runtime --> has 2 different types of Asynchronous operations
 //
@@ -33,7 +33,7 @@ describe("Async Testing Examples", () => {
     flush();
     expect(test).toBeTruthy();
   }));
-  fit("Asynchronouns tes examplwe - plain Promise", () => {
+  fit("Asynchronouns tes examplwe - plain Promise", fakeAsync(() => {
     // test a complex component that uses internally promises, by Micotasks-Queue and Tasks-Queue!
     // browser is goining to execute any synchronous code here, then is going to empty Micro-Task-Queue !
     let test = false;
@@ -41,13 +41,13 @@ describe("Async Testing Examples", () => {
     // create a promise
     // add to Task-Queue == Mager-TaskQueue
     console.log("Creating promise !");
-    setTimeout(() => {
-      console.log("setTimeout() first callback triggered.");
-    });
-    console.log("Creating promise !");
-    setTimeout(() => {
-      console.log("setTimeout() second callback triggered.");
-    });
+    // setTimeout(() => {
+    //   console.log("setTimeout() first callback triggered.");
+    // });
+    // console.log("Creating promise !");
+    // setTimeout(() => {
+    //   console.log("setTimeout() second callback triggered.");
+    // });
 
     // create a promise - chain
     // add to Micro-Task-Queue --> this will execute any micro-queue-tasks(resolve all promises scheduled) before going over to Task-Queue
@@ -55,15 +55,17 @@ describe("Async Testing Examples", () => {
       .then(() => {
         console.log("Promise first then() evaluated successfully !");
         // add new promise to Micro-Task-Queue
+
         return Promise.resolve();
       })
       // second then()-block -->corresponding to second promise
       .then(() => {
         console.log("Promise second then() evaluated successfully !");
-
         test = true;
       });
+    // flushMicrotasks() --> execute all Micro-Task-Queue in correct order first ! --> after then running Mager-TaskQueue !
+    flushMicrotasks();
     console.log("Running test assertions");
     expect(test).toBeTruthy();
-  });
+  }));
 });
