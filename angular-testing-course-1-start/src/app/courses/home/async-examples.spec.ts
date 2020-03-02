@@ -1,4 +1,6 @@
 import { fakeAsync, flush, flushMicrotasks, tick } from "@angular/core/testing";
+import { of } from "rxjs";
+import { delay } from "rxjs/operators";
 
 // Browser-Runtime --> has 2 different types of Asynchronous operations
 //
@@ -110,5 +112,19 @@ describe("Asynchronouns Testing-Examples", () => {
     // check this intermediate state, where promise been executed and after setTimeout() !!
 
     expect(counter).toBe(11);
+  }));
+  it("Asynchronous test eyample - Observables", fakeAsync(() => {
+    let test = false;
+    console.log("Creating Observable");
+    // variable with_$ --> its indicate for an observables
+    const test$ = of(test).pipe(delay(1000));
+    test$.subscribe(() => {
+      test = true;
+    });
+    // move time-forward by 1000 milliSeconds
+    tick(1000);
+    console.log("Running test assertions");
+    // assert that test = true;
+    expect(test).toBe(true);
   }));
 });
