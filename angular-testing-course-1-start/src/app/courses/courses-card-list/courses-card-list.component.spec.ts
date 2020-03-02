@@ -6,7 +6,7 @@ import { CoursesModule } from "../courses.module";
 import { CoursesCardListComponent } from "./courses-card-list.component";
 
 // this is a sample for testing Angular-Components
-describe("CoursesCardListComponent", () => {
+describe("Testing-Example --> Angular-Components Courses-Card-List.Component", () => {
   // define testUtilitys
   let component: CoursesCardListComponent;
   let fixture: ComponentFixture<CoursesCardListComponent>;
