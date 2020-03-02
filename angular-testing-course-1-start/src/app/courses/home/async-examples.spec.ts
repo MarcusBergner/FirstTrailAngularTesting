@@ -114,15 +114,18 @@ describe("Asynchronouns Testing-Examples", () => {
     expect(counter).toBe(11);
   }));
   it("Asynchronous test eyample - Observables", fakeAsync(() => {
+    // Data-Setup for this test
     let test = false;
     console.log("Creating Observable");
-    // variable with_$ --> its indicate for an observables
+    // variable with_$ --> its indicated for an observables
+    // setup functionality for this test
     const test$ = of(test).pipe(delay(1000));
     test$.subscribe(() => {
       test = true;
     });
     // move time-forward by 1000 milliSeconds
     tick(1000);
+    // setup asserts at the bottom of the test!
     console.log("Running test assertions");
     // assert that test = true;
     expect(test).toBe(true);

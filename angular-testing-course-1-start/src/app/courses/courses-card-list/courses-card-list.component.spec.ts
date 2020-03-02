@@ -6,11 +6,10 @@ import { CoursesModule } from "../courses.module";
 import { CoursesCardListComponent } from "./courses-card-list.component";
 
 // this is a sample for testing Angular-Components
-describe("Testing-Example --> Angular-Components Courses-Card-List.Component", () => {
+describe("Testing-Example --> For Angular-Components Courses-Card-List.Component", () => {
   // define testUtilitys
   let component: CoursesCardListComponent;
   let fixture: ComponentFixture<CoursesCardListComponent>;
-
   let testDebugElement: DebugElement;
 
   // async() --> wait for any asynchconous operations,
@@ -31,7 +30,9 @@ describe("Testing-Example --> Angular-Components Courses-Card-List.Component", (
         testDebugElement = fixture.debugElement;
       });
   }));
-  it("should create the component", () => {});
+  it("should create the component", () => {
+    expect(component).toBeTruthy();
+  });
 
   // example for a purely synchronous test!
   it("should display the course list", () => {
