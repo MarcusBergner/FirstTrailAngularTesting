@@ -1,5 +1,11 @@
 import { DebugElement } from "@angular/core";
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from "@angular/core/testing";
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  TestBed
+} from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { of } from "rxjs/internal/observable/of";
@@ -26,6 +32,7 @@ describe("Example Test for Container-Components --> Home-Component", () => {
     course => course.category == "ADVANCED"
   );
 
+  // async() --> wait for the promise to reslove , before is going on with the test
   beforeEach(async(() => {
     const coursesServiceSpy = jasmine.createSpyObj("CoursesService", [
       "findAllCourses"
@@ -75,7 +82,7 @@ describe("Example Test for Container-Components --> Home-Component", () => {
   });
 
   // simulated a user tab clicked in  the DOM
-  it("should display advanced courses when simulated tab is clicked by the user !", fakeAsync(() => {
+  it("should display advanced courses when simulated tab is clicked by the user -fakeAsync() !", fakeAsync(() => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     // detectChanges() --> reflect any  channges in DOM
     fixture.detectChanges();
@@ -83,21 +90,47 @@ describe("Example Test for Container-Components --> Home-Component", () => {
     click(tabs[1]);
     fixture.detectChanges();
     flush();
-    const cardTitles = testDebugElement.queryAll(By.css(".mat-card-title"));
+    const cardTitles = testDebugElement.queryAll(
+      By.css(".mat-tab-body-active")
+    );
     expect(cardTitles.length).toBeGreaterThan(
       0,
       "Could not find any card  titles !"
     );
-    expect(cardTitles[5].nativeElement.textContent).toContain(
-      "Angular for Beginners"
-    );
     expect(cardTitles[0].nativeElement.textContent).toContain(
-      "Angular Testing Course"
+      "Angular Security Course"
     );
-    
+
     // setTimeout(() => {
 
     //   // done() --> Jasmine function, that tell jasmie the implaementation is complete
+    //   done();
+    // }, 500);
+  }));
+  it("should display advanced courses, simulated tab clicked by the user - async()!", async(() => {
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+    // detectChanges() --> reflect any  channges in DOM
+    fixture.detectChanges();
+    const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
+    click(tabs[1]);
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      console.log("called whenSable()");
+      const cardTitles = testDebugElement.queryAll(
+        By.css(".mat-tab-body-active")
+      );
+      expect(cardTitles.length).toBeGreaterThan(
+        0,
+        "Could not find any card  titles !"
+      );
+      expect(cardTitles[0].nativeElement.textContent).toContain(
+        "Angular Security Course"
+      );
+    });
+
+    // setTimeout(() => {
+
+    //   // done() --> Jasmine function, that tell jasmine the implaementation is complete
     //   done();
     // }, 500);
   }));
