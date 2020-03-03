@@ -81,6 +81,7 @@ describe("CoursesService Unit-Tests --> Angular-HTTP-Services", () => {
     );
     const req = httpTestingController.expectOne("/api/courses/12");
     expect(req.request.method).toEqual("PUT");
+    // passing data --> will go on the request body
     req.flush("Save course failed !", {
       status: 500,
       statusText: "Internal Server Error !"
@@ -88,7 +89,7 @@ describe("CoursesService Unit-Tests --> Angular-HTTP-Services", () => {
   });
 
   //  Test-Methode to test a get request with multiple query parameters
-  it("should find the a list of lessons !", () => {
+  it("should find a list of lessons !", () => {
     coursesService.findLessons(12).subscribe(lessons => {
       expect(lessons).toBeTruthy();
       expect(lessons.length).toBe(3);
@@ -102,6 +103,7 @@ describe("CoursesService Unit-Tests --> Angular-HTTP-Services", () => {
     expect(req.request.params.get("sortOrder")).toEqual("asc");
     expect(req.request.params.get("pageNumber")).toEqual("0");
     expect(req.request.params.get("pageSize")).toEqual("3");
+    // triggering mock-request
     req.flush({
       payload: findLessonsForCourse(12).slice(0, 3)
     });
