@@ -6,35 +6,39 @@ import { CoursesModule } from "../courses.module";
 import { CoursesCardListComponent } from "./courses-card-list.component";
 
 // this is a sample for testing Angular-Components
-describe("Testing-Example --> Angular-Components Courses-Card-List.Component", () => {
+describe("Testing-Example --> For Angular-Components --> Courses-Card-List.Component", () => {
   // define testUtilitys
   let component: CoursesCardListComponent;
   let fixture: ComponentFixture<CoursesCardListComponent>;
-
   let testDebugElement: DebugElement;
 
-  // async() --> wait for any asynchconous operations,
-  // that we triggered by the code passed with to complete in this Test-Block (default timeout 5 sek) !
-  // after that, beforeEach() runs
+  // NOTICE: only safe way to execute code after compilation finished, and wait for promise to resolve --> .then(() =>).
+
+  // async() --> wait for any asynchconous operations, that we triggered by the code passed with to complete in this Test-Block (default timeout 5 sek), after that beforeEach() runs !
   // here is the case: detect that the promise was lunched here and wait for the promise to complete
   beforeEach(async(() => {
+    // setup testing module
     TestBed.configureTestingModule({
       imports: [CoursesModule]
-      // only safe way to execute code after compilation finished,
-      // and wait for promise to resolve --> .then(() =>)
     })
       .compileComponents()
       .then(() => {
-        // setup our test
+        // initialize test variables
         fixture = TestBed.createComponent(CoursesCardListComponent);
+        // grab an instance of the component itself
         component = fixture.componentInstance;
+
         testDebugElement = fixture.debugElement;
       });
   }));
-  it("should create the component", () => {});
+  it("should create the component", () => {
+    expect(component).toBeTruthy();
+    console.log(component);
+  });
 
   // example for a purely synchronous test!
   it("should display the course list", () => {
+    // initialize courses member-variable of our components
     component.courses = setupCourses();
     // need to notify the component, after assinging data to it for trigger change detection!
 

@@ -1,4 +1,6 @@
 import { fakeAsync, flush, flushMicrotasks, tick } from "@angular/core/testing";
+import { of } from "rxjs";
+import { delay } from "rxjs/operators";
 
 // Browser-Runtime --> has 2 different types of Asynchronous operations
 //
@@ -7,7 +9,9 @@ describe("Asynchronouns Testing-Examples", () => {
     let test = false;
 
     setTimeout(() => {
-      console.log("runnig assertions");
+      console.log(
+        "runnig assertions, from Asynchronous test example with Jasmine done()"
+      );
       test = true;
       expect(test).toBeTruthy();
       done();
@@ -22,7 +26,9 @@ describe("Asynchronouns Testing-Examples", () => {
 
     setTimeout(() => {});
     setTimeout(() => {
-      console.log("runnig assertions");
+      console.log(
+        "runnig assertions, from Asynchrounous test example - setTimeout()"
+      );
       test = true;
     }, 1000);
     // Test-Body
@@ -40,7 +46,9 @@ describe("Asynchronouns Testing-Examples", () => {
 
     // create a promise
     // add to Task-Queue == Mager-TaskQueue
-    console.log("Creating promise !");
+    console.log(
+      "Creating promise, from Asynchronouns test example - plain Promise !"
+    );
     // setTimeout(() => {
     //   console.log("setTimeout() first callback triggered.");
     // });
@@ -53,25 +61,31 @@ describe("Asynchronouns Testing-Examples", () => {
     // add to Micro-Task-Queue --> this will execute any micro-queue-tasks(resolve all promises scheduled) before going over to Task-Queue
     Promise.resolve()
       .then(() => {
-        console.log("Promise first then() evaluated successfully !");
+        console.log(
+          "Promise first then() evaluated successfully, from Asynchronouns test example - plain Promise !"
+        );
         // add new promise to Micro-Task-Queue
 
         return Promise.resolve();
       })
       // second then()-block -->corresponding to second promise
       .then(() => {
-        console.log("Promise second then() evaluated successfully !");
+        console.log(
+          "Promise second then() evaluated successfully, from Asynchronouns test example - plain Promise !"
+        );
         test = true;
       });
     // flushMicrotasks() --> execute all Micro-Task-Queue in correct order first ! --> after then running Mager-TaskQueue !
     flushMicrotasks();
-    console.log("Running test assertions");
+    console.log(
+      "Running test assertions, from Asynchronouns test example - plain Promise"
+    );
     expect(test).toBeTruthy();
   }));
   it("Asynchronous 'mixed' test example --> Promise +  setTimeout()", fakeAsync(() => {
     // define testBody
     let counter = 0;
-    console.log("Creating promise Asynchronous 'mixed' test example!");
+    console.log("Creating promise, from Asynchronous 'mixed' test example!");
 
     // create a Promise
     Promise.resolve()
@@ -98,5 +112,22 @@ describe("Asynchronouns Testing-Examples", () => {
     // check this intermediate state, where promise been executed and after setTimeout() !!
 
     expect(counter).toBe(11);
+  }));
+  it("Asynchronous test eyample - Observables", fakeAsync(() => {
+    // Data-Setup for this test
+    let test = false;
+    console.log("Creating Observable");
+    // variable with_$ --> its indicated for an observables
+    // setup functionality for this test
+    const test$ = of(test).pipe(delay(1000));
+    test$.subscribe(() => {
+      test = true;
+    });
+    // move time-forward by 1000 milliSeconds
+    tick(1000);
+    // setup asserts at the bottom of the test!
+    console.log("Running test assertions");
+    // assert that test = true;
+    expect(test).toBe(true);
   }));
 });

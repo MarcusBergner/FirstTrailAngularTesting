@@ -8,12 +8,14 @@ import { COURSES, findLessonsForCourse } from "../../../../server/db-data";
 import { Course } from "../model/course";
 import { CoursesService } from "./courses.service";
 
-describe("CoursesService", () => {
+describe("CoursesService Unit-Tests --> Angular-HTTP-Services", () => {
   let coursesService: CoursesService,
     httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      // HttpClientTestingModule --> mock implementation of an http-client-->  that is going to return test data
+
       imports: [HttpClientTestingModule],
       providers: [CoursesService, HttpClientTestingModule]
     });
@@ -52,12 +54,17 @@ describe("CoursesService", () => {
       expect(course.id).toBe(12);
     });
     const req = httpTestingController.expectOne("/api/courses/12");
+    // validate type of request
     expect(req.request.method).toEqual("PUT");
+    // validating the body of put-request that sent to the server
     expect(req.request.body.titles.description).toEqual(
       changes.titles.description
     );
+    // triggered the mock request, simulate response
     req.flush({
+      // give original course-object[12]
       ...COURSES[12],
+      // override some of it-properties
       ...changes
     });
   });
@@ -74,6 +81,7 @@ describe("CoursesService", () => {
     );
     const req = httpTestingController.expectOne("/api/courses/12");
     expect(req.request.method).toEqual("PUT");
+    // passing data --> will go on the request body
     req.flush("Save course failed !", {
       status: 500,
       statusText: "Internal Server Error !"
@@ -81,7 +89,7 @@ describe("CoursesService", () => {
   });
 
   //  Test-Methode to test a get request with multiple query parameters
-  it("should find the a list of lessons !", () => {
+  it("should find a list of lessons !", () => {
     coursesService.findLessons(12).subscribe(lessons => {
       expect(lessons).toBeTruthy();
       expect(lessons.length).toBe(3);
@@ -95,13 +103,14 @@ describe("CoursesService", () => {
     expect(req.request.params.get("sortOrder")).toEqual("asc");
     expect(req.request.params.get("pageNumber")).toEqual("0");
     expect(req.request.params.get("pageSize")).toEqual("3");
+    // triggering mock-request
     req.flush({
       payload: findLessonsForCourse(12).slice(0, 3)
     });
   });
   afterEach(() => {
-    //  httpTestingController.verify() stellt sicher,
-    // dass nur die hier definierte HttpRequest im  httpTestingController genutz werden, um die dort definierten  API-Url's zu  übberprüfen!
+    //  httpTestingController.verify() stellt sicher, dass nur die hier definierte HttpRequest im
+    //  httpTestingController genutz werden, um die dort definierten  API-Url's zu  übberprüfen!
     httpTestingController.verify();
   });
 });
