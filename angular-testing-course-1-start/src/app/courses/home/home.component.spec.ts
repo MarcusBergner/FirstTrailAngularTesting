@@ -1,5 +1,11 @@
 import { DebugElement } from "@angular/core";
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from "@angular/core/testing";
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  TestBed
+} from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { of } from "rxjs/internal/observable/of";
@@ -36,7 +42,7 @@ describe("Testing the Home-Component", () => {
         CoursesModule,
         NoopAnimationsModule
       ],
-      // Dependency Injection 
+      // Dependency Injection
       providers: [{ provide: CoursesService, useValue: coursesServiceSpy }]
     })
       .compileComponents()
@@ -52,13 +58,13 @@ describe("Testing the Home-Component", () => {
     expect(component).toBeTruthy();
   });
 
-it("should display only beginnerCourses", ()=>{
-  
-  coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
-  fixture.detectChanges();
-  const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
-  expect(tabs.length).toBe(1,"Unexpected number of tabs found!");
-})
+  // it("should display only beginnerCourses", ()=>{
+
+  //   coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
+  //   fixture.detectChanges();
+  //   const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
+  //   expect(tabs.length).toBe(1,"Unexpected number of tabs found!");
+  // })
 
   // synchron testing
   it("should display only beginner courses !", () => {
@@ -100,7 +106,7 @@ it("should display only beginnerCourses", ()=>{
       "Angular Testing Course"
     );
     // setTimeout(() => {
-    
+
     //   // done() --> Jasmine function, that tell jasmie the implaementation is complete
     //   done();
     // }, 500);

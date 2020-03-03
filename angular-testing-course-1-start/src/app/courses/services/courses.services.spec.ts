@@ -8,12 +8,14 @@ import { COURSES, findLessonsForCourse } from "../../../../server/db-data";
 import { Course } from "../model/course";
 import { CoursesService } from "./courses.service";
 
-describe("CoursesService", () => {
+describe("CoursesService Unit-Tests --> Angular-HTTP-Services", () => {
   let coursesService: CoursesService,
     httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      // HttpClientTestingModule --> mock implementation of an http-client-->  that is going to return test data
+
       imports: [HttpClientTestingModule],
       providers: [CoursesService, HttpClientTestingModule]
     });
@@ -52,12 +54,17 @@ describe("CoursesService", () => {
       expect(course.id).toBe(12);
     });
     const req = httpTestingController.expectOne("/api/courses/12");
+    // validate type of request
     expect(req.request.method).toEqual("PUT");
+    // validating the body of put-request that sent to the server
     expect(req.request.body.titles.description).toEqual(
       changes.titles.description
     );
+    // triggered the mock request, simulate response
     req.flush({
+      // give original course-object[12]
       ...COURSES[12],
+      // override some of it-properties
       ...changes
     });
   });
@@ -100,8 +107,8 @@ describe("CoursesService", () => {
     });
   });
   afterEach(() => {
-    //  httpTestingController.verify() stellt sicher,
-    // dass nur die hier definierte HttpRequest im  httpTestingController genutz werden, um die dort definierten  API-Url's zu  übberprüfen!
+    //  httpTestingController.verify() stellt sicher, dass nur die hier definierte HttpRequest im
+    //  httpTestingController genutz werden, um die dort definierten  API-Url's zu  übberprüfen!
     httpTestingController.verify();
   });
 });
