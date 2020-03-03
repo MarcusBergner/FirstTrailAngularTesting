@@ -27,7 +27,6 @@ describe("Testing-Example --> For Angular-Components --> Courses-Card-List.Compo
         fixture = TestBed.createComponent(CoursesCardListComponent);
         // grab an instance of the component itself
         component = fixture.componentInstance;
-
         testDebugElement = fixture.debugElement;
       });
   }));
@@ -41,11 +40,9 @@ describe("Testing-Example --> For Angular-Components --> Courses-Card-List.Compo
     // initialize courses member-variable of our components
     component.courses = setupCourses();
     // need to notify the component, after assinging data to it for trigger change detection!
-
     fixture.detectChanges();
-    // console.log(testDebugElement.nativeElement.outerHTML);
-
     // nativeElement --> return the corresponds native DOM element!
+    console.log(testDebugElement.nativeElement.outerHTML);
     const cards = testDebugElement.queryAll(By.css(".course-card"));
     expect(cards).toBeTruthy("Could not find cards !");
     expect(cards.length).toBe(12, "Unexpected number of courses !");

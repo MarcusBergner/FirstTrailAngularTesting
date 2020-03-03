@@ -19,7 +19,7 @@ import { HomeComponent } from "./home.component";
 // its a top-level-component (fetch the data for this application to needs from a service )
 // testing the conditional logic in the template
 
-describe("Testing the Home-Component", () => {
+describe("Example Test for Container-Components --> Home-Component", () => {
   let fixture: ComponentFixture<HomeComponent>;
   let component: HomeComponent;
   let testDebugElement: DebugElement;
@@ -32,6 +32,7 @@ describe("Testing the Home-Component", () => {
     course => course.category == "ADVANCED"
   );
 
+  // async() --> wait for the promise to reslove , before is going on with the test
   beforeEach(async(() => {
     const coursesServiceSpy = jasmine.createSpyObj("CoursesService", [
       "findAllCourses"
@@ -57,19 +58,11 @@ describe("Testing the Home-Component", () => {
   it("should create the component", () => {
     expect(component).toBeTruthy();
   });
-
-  // it("should display only beginnerCourses", ()=>{
-
-  //   coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
-  //   fixture.detectChanges();
-  //   const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
-  //   expect(tabs.length).toBe(1,"Unexpected number of tabs found!");
-  // })
-
   // synchron testing
   it("should display only beginner courses !", () => {
     coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
     fixture.detectChanges();
+
     const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
     expect(tabs.length).toBe(1, "Unexpected number of tabs found !");
   });
@@ -89,7 +82,7 @@ describe("Testing the Home-Component", () => {
   });
 
   // simulated a user tab clicked in  the DOM
-  it("should display advanced courses when tab is clicked by the user !", fakeAsync(() => {
+  it("should display advanced courses when simulated tab is clicked by the user -fakeAsync() !", fakeAsync(() => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     // detectChanges() --> reflect any  channges in DOM
     fixture.detectChanges();
@@ -97,17 +90,47 @@ describe("Testing the Home-Component", () => {
     click(tabs[1]);
     fixture.detectChanges();
     flush();
-    const cardTitles = testDebugElement.queryAll(By.css(".mat-card-title"));
+    const cardTitles = testDebugElement.queryAll(
+      By.css(".mat-tab-body-active")
+    );
     expect(cardTitles.length).toBeGreaterThan(
       0,
       "Could not find any card  titles !"
     );
     expect(cardTitles[0].nativeElement.textContent).toContain(
-      "Angular Testing Course"
+      "Angular Security Course"
     );
+
     // setTimeout(() => {
 
     //   // done() --> Jasmine function, that tell jasmie the implaementation is complete
+    //   done();
+    // }, 500);
+  }));
+  it("should display advanced courses, simulated tab clicked by the user - async()!", async(() => {
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+    // detectChanges() --> reflect any  channges in DOM
+    fixture.detectChanges();
+    const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
+    click(tabs[1]);
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      console.log("called whenSable()");
+      const cardTitles = testDebugElement.queryAll(
+        By.css(".mat-tab-body-active")
+      );
+      expect(cardTitles.length).toBeGreaterThan(
+        0,
+        "Could not find any card  titles !"
+      );
+      expect(cardTitles[0].nativeElement.textContent).toContain(
+        "Angular Security Course"
+      );
+    });
+
+    // setTimeout(() => {
+
+    //   // done() --> Jasmine function, that tell jasmine the implaementation is complete
     //   done();
     // }, 500);
   }));
