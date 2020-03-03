@@ -1,11 +1,5 @@
 import { DebugElement } from "@angular/core";
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  TestBed
-} from "@angular/core/testing";
+import { async, ComponentFixture, fakeAsync, flush, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { of } from "rxjs/internal/observable/of";
@@ -19,7 +13,7 @@ import { HomeComponent } from "./home.component";
 // its a top-level-component (fetch the data for this application to needs from a service )
 // testing the conditional logic in the template
 
-describe("Testing the Home-Component", () => {
+describe("Example Test for Container-Components --> Home-Component", () => {
   let fixture: ComponentFixture<HomeComponent>;
   let component: HomeComponent;
   let testDebugElement: DebugElement;
@@ -57,19 +51,11 @@ describe("Testing the Home-Component", () => {
   it("should create the component", () => {
     expect(component).toBeTruthy();
   });
-
-  // it("should display only beginnerCourses", ()=>{
-
-  //   coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
-  //   fixture.detectChanges();
-  //   const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
-  //   expect(tabs.length).toBe(1,"Unexpected number of tabs found!");
-  // })
-
   // synchron testing
   it("should display only beginner courses !", () => {
     coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
     fixture.detectChanges();
+
     const tabs = testDebugElement.queryAll(By.css(".mat-tab-label"));
     expect(tabs.length).toBe(1, "Unexpected number of tabs found !");
   });
@@ -89,7 +75,7 @@ describe("Testing the Home-Component", () => {
   });
 
   // simulated a user tab clicked in  the DOM
-  it("should display advanced courses when tab is clicked by the user !", fakeAsync(() => {
+  it("should display advanced courses when simulated tab is clicked by the user !", fakeAsync(() => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     // detectChanges() --> reflect any  channges in DOM
     fixture.detectChanges();
@@ -102,9 +88,13 @@ describe("Testing the Home-Component", () => {
       0,
       "Could not find any card  titles !"
     );
+    expect(cardTitles[5].nativeElement.textContent).toContain(
+      "Angular for Beginners"
+    );
     expect(cardTitles[0].nativeElement.textContent).toContain(
       "Angular Testing Course"
     );
+    
     // setTimeout(() => {
 
     //   // done() --> Jasmine function, that tell jasmie the implaementation is complete
